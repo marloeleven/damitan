@@ -1,7 +1,3 @@
 import { useEffect } from 'react';
 
-export default (callback: React.EffectCallback) =>
-  useEffect(() => {
-    console.warn('RUN CB');
-    callback();
-  }, []);
+export default (callback: React.EffectCallback) => useEffect(callback, []);

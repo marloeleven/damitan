@@ -12,6 +12,7 @@ interface IItem {
   image_1: string;
   image_2: string;
   image_3: string;
+  disable: number;
 }
 type IData = IItem[] | [];
 
@@ -19,11 +20,11 @@ export default () => {
   const [state, setState] = useState<IData>([]);
 
   useEffect(() => {
-    // const localData = lscache.get(LOCAL_DATA) as IData;
+    const localData = lscache.get(LOCAL_DATA) as IData;
 
-    // if (localData) {
-    //   return setState(localData);
-    // }
+    if (localData) {
+      return setState(localData);
+    }
 
     GSheets().then((result) => {
       // lscache.set(LOCAL_DATA, result, 2);

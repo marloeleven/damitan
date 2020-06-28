@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import useEffectOnce from 'hooks/useEffectOnce';
 
-const PENDING = 'pending';
+const LOADING = 'loading';
 const ERROR = 'error';
 const SUCCESS = 'success';
 
 export default (promise: any) => {
-  const [status, setStatus] = useState<string>(PENDING);
+  const [status, setStatus] = useState<string>(LOADING);
   const [result, setResult] = useState<any>();
-  const [suspender, setSuspender] = useState<any>(new Promise(() => {}));
+  const [suspender, setSuspender] = useState<Promise<any>>(
+    new Promise(() => {})
+  );
 
   useEffectOnce(() => {
     const promiseResult = promise()
       .then((res: any) => {
         setResult(res);
 
-        setTimeout(() => {
-          setStatus(SUCCESS);
-        }, 3000);
+        setStatus(SUCCESS);
       })
       .catch((e: Error) => {
         setResult(e);
@@ -30,7 +30,7 @@ export default (promise: any) => {
   return {
     read: () => {
       switch (status) {
-        case PENDING:
+        case LOADING:
           throw suspender;
         case ERROR:
           throw result;
