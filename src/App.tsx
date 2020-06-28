@@ -4,6 +4,7 @@ import gsheets from 'api/gsheets';
 import useFetch from 'hooks/useFetch';
 import Products from 'containers/products';
 import Header from 'containers/header';
+import Loader from 'containers/loader';
 
 const App: React.FC = () => {
   const sheets = useFetch(gsheets);
@@ -11,7 +12,7 @@ const App: React.FC = () => {
   return (
     <>
       <Header />
-      <Suspense fallback={'<h1>Loading...</h1>'}>
+      <Suspense fallback={<Loader />}>
         <Products sheets={sheets} />
       </Suspense>
     </>
