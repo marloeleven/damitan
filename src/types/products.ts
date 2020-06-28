@@ -9,6 +9,7 @@ export interface IItem {
   image_2_title: string;
   image_3: string;
   image_3_title: string;
+  tags: string;
   disable: number;
 }
 

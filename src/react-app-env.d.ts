@@ -2,3 +2,4 @@
 
 declare module 'g-sheets-api';
 declare module 'lscache';
+declare module 'lodash/*';

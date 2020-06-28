@@ -1,17 +1,24 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
 
+import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 
 import readFetch from 'utils/readFetch';
+import peso from 'utils/currency';
 import { IList, IItem } from 'types/products';
+
+const filterDisabled = ({ disable }: IItem) => Number(disable) === 0;
+const trim = (a: string) => a.trim();
+const sort = (a: string, b: string) => a.localeCompare(b);
+const getTags = ({ tags = '' }: IItem): string[] =>
+  tags.split(',').map(trim).sort(sort);
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -20,9 +27,6 @@ const useStyles = makeStyles((theme) => ({
   heroContent: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 0, 6),
-  },
-  heroButtons: {
-    marginTop: theme.spacing(4),
   },
   cardGrid: {
     paddingTop: theme.spacing(8),
@@ -43,6 +47,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
+
+  chip: {
+    margin: theme.spacing(0.5),
+  },
 }));
 
 export default (props: any) => {
@@ -50,10 +58,12 @@ export default (props: any) => {
 
   const result: IList = readFetch(props.sheets);
 
+  console.warn(result);
+
   return (
     <Container maxWidth="lg" className="p-sm p-4">
       <Grid container spacing={4}>
-        {result.map((item: IItem) => (
+        {result.filter(filterDisabled).map((item: IItem) => (
           <Grid item key={item.id} xs={12} sm={6} md={4}>
             <Card className={classes.card}>
               <CardMedia
@@ -66,14 +76,18 @@ export default (props: any) => {
                   {item.name}
                 </Typography>
                 <Typography>{item.description}</Typography>
+                <Typography>{peso(Number(item.price))}</Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" color="primary">
-                  View
-                </Button>
-                <Button size="small" color="primary">
-                  Edit
-                </Button>
+                {getTags(item).map((tag, i) => (
+                  <Chip
+                    key={i}
+                    size="small"
+                    label={tag}
+                    variant="outlined"
+                    className={classes.chip}
+                  />
+                ))}
               </CardActions>
             </Card>
           </Grid>
