@@ -25,7 +25,8 @@
     "unstated-typescript": "^2.1.7"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "build:css": "tailwindcss build ./tailwind.css -o src/tailwind.css",
+    "start": "yarn build:css && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import lscache from 'lscache';
 import GSheets from 'api/gsheets';
+import { isDevelopment } from './';
 
 const LOCAL_DATA = 'LOCAL_DATA';
 
@@ -27,10 +28,13 @@ export default () => {
     }
 
     GSheets().then((result) => {
-      // lscache.set(LOCAL_DATA, result, 2);
-      lscache.set(LOCAL_DATA, result);
-
       setState(result as IData);
+
+      if (isDevelopment()) {
+        return lscache.set(LOCAL_DATA, result);
+      }
+
+      lscache.set(LOCAL_DATA, result, 2);
     });
   }, []);
 
