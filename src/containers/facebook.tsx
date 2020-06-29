@@ -7,7 +7,6 @@ interface IProps {
 }
 
 export default React.memo(({ page_id, color }: IProps) => {
-  console.warn('rendered');
   useEffectOnce(() => {
     console.warn('run');
     window.fbAsyncInit = () => {
@@ -17,6 +16,18 @@ export default React.memo(({ page_id, color }: IProps) => {
         version: 'v7.0',
       });
     };
+
+    (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id;
+      // @ts-ignore
+      js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+      // @ts-ignore
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, 'script', 'facebook-jssdk');
   });
 
   return (
