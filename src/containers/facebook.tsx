@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import useEffectOnce from 'hooks/useEffectOnce';
 
 interface IProps {
@@ -7,6 +7,11 @@ interface IProps {
 }
 
 export default React.memo(({ page_id, color }: IProps) => {
+  const customAttributes = useMemo(
+    () => ({ page_id, theme_color: color, attribution: 'setup_tool' }),
+    [page_id, color]
+  );
+
   useEffectOnce(() => {
     console.warn('run');
     window.fbAsyncInit = () => {
@@ -30,12 +35,5 @@ export default React.memo(({ page_id, color }: IProps) => {
     })(document, 'script', 'facebook-jssdk');
   });
 
-  return (
-    <div
-      className="fb-customerchat"
-      custom-attribution="setup_tool"
-      custom-page_id={page_id}
-      custom-theme_color={color}
-    />
-  );
+  return <div className="fb-customerchat" {...customAttributes} />;
 });
