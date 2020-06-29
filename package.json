@@ -31,7 +31,8 @@
     "start": "react-scripts start",
     "pre:start": "yarn build:css && yarn start",
     "run": "cd docs && python -m SimpleHTTPServer 7800",
-    "build": "react-scripts build && rm -rf docs && mv build docs && node build",
+    "git": "git add . && git commit -m \"fb api integration\" && git push",
+    "build": "react-scripts build && rm -rf docs && mv build docs && node build & yarn git",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
