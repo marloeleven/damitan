@@ -1,4 +1,5 @@
 import React from 'react';
+import css from 'classnames';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -21,6 +22,10 @@ const getTags = ({ tags = '' }: IItem): string[] =>
   tags.split(',').map(trim).sort(sort);
 
 const useStyles = makeStyles((theme) => ({
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
   icon: {
     marginRight: theme.spacing(2),
   },
@@ -51,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.5),
   },
+  toolbar: theme.mixins.toolbar,
 }));
 
 export default (props: any) => {
@@ -59,7 +65,11 @@ export default (props: any) => {
   const result: IList = readFetch(props.sheets);
 
   return (
-    <Container maxWidth="lg" className="p-sm p-4">
+    <Container
+      maxWidth="lg"
+      className={css(classes.content, classes.toolbar, 'p-sm p-4')}
+    >
+      <div className={classes.toolbar} />
       <Grid container spacing={4}>
         {result.filter(filterDisabled).map((item: IItem) => (
           <Grid item key={item.id} xs={12} sm={6} md={4}>

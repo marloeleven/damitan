@@ -10,6 +10,11 @@ import Lang from 'contexts/lang';
 
 import App from './App';
 
+// Login
+// Filter
+// Cart
+// Pagination
+
 ReactDOM.render(
   <React.StrictMode>
     <ErrorBoundary>
