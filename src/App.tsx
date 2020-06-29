@@ -19,6 +19,8 @@ const App: React.FC = () => {
         <Products sheets={sheets} />
       </Suspense>
       <Facebook
+        app_id={CONFIG.fb.appId}
+        app_version={CONFIG.fb.version}
         page_id={CONFIG.fb.messenger.page_id}
         color={CONFIG.fb.messenger.color}
       />
