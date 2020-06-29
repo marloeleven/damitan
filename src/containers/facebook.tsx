@@ -27,10 +27,7 @@ export default ({ app_id, app_version, page_id, color }: IProps) => {
     const fbSdk$ = new Subject();
     const msSdk$ = new Subject();
 
-    combineLatest(fbSdk$, msSdk$).subscribe(() => {
-      console.warn('obse');
-      initMessenger();
-    });
+    combineLatest(fbSdk$, msSdk$).subscribe(() => initMessenger());
 
     const initMessenger = once(() => {
       window.FB.init({
@@ -41,15 +38,8 @@ export default ({ app_id, app_version, page_id, color }: IProps) => {
       });
     });
 
-    setTimeout(() => {
-      console.warn('manual');
-      initMessenger();
-    }, 15000);
-
-    window.fbAsyncInit = () => {
-      console.warn('automatic');
-      initMessenger();
-    };
+    setTimeout(initMessenger, 15000);
+    window.fbAsyncInit = initMessenger;
 
     appendScript('facebook-jssdk', (js: HTMLScriptElement) => {
       js.defer = true;
