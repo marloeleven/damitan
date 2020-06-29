@@ -1,10 +1,20 @@
 import React, { useMemo } from 'react';
+import once from 'lodash/once';
+
 import useEffectOnce from 'hooks/useEffectOnce';
 
 interface IProps {
   page_id: string | number;
   color: string;
 }
+
+const initMessenger = once(() => {
+  console.warn('trigger init');
+  window.FB.init({
+    xfbml: true,
+    version: 'v7.0',
+  });
+});
 
 export default React.memo(({ page_id, color }: IProps) => {
   const customAttributes = useMemo(
@@ -13,13 +23,13 @@ export default React.memo(({ page_id, color }: IProps) => {
   );
 
   useEffectOnce(() => {
-    console.warn('run');
+    setTimeout(() => {
+      console.warn('manual');
+      initMessenger();
+    }, 15000);
     window.fbAsyncInit = () => {
-      console.warn('INITS');
-      window.FB.init({
-        xfbml: true,
-        version: 'v7.0',
-      });
+      console.warn('automatic');
+      initMessenger();
     };
 
     (function (d, s, id) {
@@ -28,6 +38,8 @@ export default React.memo(({ page_id, color }: IProps) => {
       if (d.getElementById(id)) return;
       js = d.createElement(s);
       js.id = id;
+      // @ts-ignore
+      js.defer = true;
       // @ts-ignore
       js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
       // @ts-ignore
